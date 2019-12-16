@@ -6,5 +6,6 @@ Resource  resource.robot
 
 *** Keywords ***
 Creare Criteria
-  ${resonses}  create criteria  ${RESOURCE}  data_for_criteria
-  [Return]  ${resonses.id}
+  ${data}  data_for_criteria
+  ${response}  create criteria  ${RESOURCE}  ${data}
+  [Return]  ${response}

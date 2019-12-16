@@ -6,8 +6,8 @@ import requests
 from requests.auth import HTTPBasicAuth
 
 
-class C(object):
-    def __init__(self, username='', password='', auth_header='Authorization', api_host='http://localhost:8000',
+class ClientCriteria(object):
+    def __init__(self, username='admin', password='adminpassword', auth_header='Authorization', api_host='http://localhost:8000',
                  api_version='0', loop=asyncio.get_event_loop()):
         self._username = username
         self._password = password
