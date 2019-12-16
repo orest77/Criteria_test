@@ -1,5 +1,10 @@
 *** Settings ***
-Resource  keywords.robot
+Library  client.criteria_client
+#Library  data.init_data
+
+#Resource  keywords.robot
+
 *** Test Cases ***
 TestsCriteia
-  CreareCriteria
+  ${data}
+  ${resonses}

@@ -1,11 +1,10 @@
 *** Settings ***
-Library  ClientCriteria
-Library  Collections
-Library  init_data.py
+Library  client.criteria_client.ClientCriteria
+Library  data.init_data
 
 Resource  resource.robot
 
 *** Keywords ***
-CreareCriteria
+Creare Criteria
   ${resonses}  create criteria  ${RESOURCE}  data_for_criteria
   [Return]  ${resonses.id}

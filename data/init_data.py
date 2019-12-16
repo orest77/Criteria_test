@@ -1,3 +1,4 @@
+#!/usr/bin/python
 from munch import munchify
 
 
