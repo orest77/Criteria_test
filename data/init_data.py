@@ -26,3 +26,10 @@ def data_for_criteria():
             }
         }
     )
+
+def munch_dict(arg=None, data=False):
+    if arg is None:
+        arg = {}
+    if data:
+        arg['data'] = {}
+    return munchify(arg)

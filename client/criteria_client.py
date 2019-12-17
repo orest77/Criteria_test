@@ -1,17 +1,19 @@
 #!/usr/bin/python
 import json
-import os
+from json import loads
 import asyncio
 import requests
+from munch import munchify
 from requests.auth import HTTPBasicAuth
+
+from client.exceptions import InvalidResponse
 
 
 class ClientCriteria(object):
-    def __init__(self, username='admin', password='adminpassword', auth_header='Authorization', api_host='http://localhost:8000',
+    def __init__(self, username='', password='', api_host='http://localhost:8000',
                  api_version='0', loop=asyncio.get_event_loop()):
         self._username = username
         self._password = password
-        self._auth_header = auth_header
         self.api_host = api_host
         self.api_version = api_version
         self.loop = loop
@@ -33,7 +35,9 @@ class ClientCriteria(object):
                 auth=HTTPBasicAuth(self._username, self._password),
                 headers=self.headers,
             )
-        return response
+        if response.status_code == 200:
+            return munchify(loads(response.text))
+        raise InvalidResponse(response)
 
     ######Method POST########################
 
@@ -44,7 +48,9 @@ class ClientCriteria(object):
             data=json.dumps(data),
             headers=self.headers
         )
-        return response
+        if response.status_code == 201:
+            return munchify(loads(response.text))
+        raise InvalidResponse(response)
 
     ##############Method PATCH#############
 
@@ -55,7 +61,9 @@ class ClientCriteria(object):
             headers=self.headers,
             data=json.dumps(data)
         )
-        return response
+        if response.status_code == 200:
+            return munchify(loads(response.text))
+        raise InvalidResponse(response)
 
     ##########Method DELETE###################
 
@@ -65,4 +73,6 @@ class ClientCriteria(object):
             auth=HTTPBasicAuth(self._username, self._password),
             headers=self.headers
         )
-        return response
+        if response.status_code == 200:
+            return munchify(loads(response.text))
+        raise InvalidResponse(response)

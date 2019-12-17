@@ -5,5 +5,5 @@
 Resource  keywords.robot
 
 *** Test Cases ***
-TestsCriteia
-  Creare Criteria
+Тест створити критерію
+  Створити критерію
