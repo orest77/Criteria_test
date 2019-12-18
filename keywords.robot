@@ -1,9 +1,12 @@
 *** Settings ***
-#Library  client.criteria_client.ClientCriteria
 Library  data.init_data
 Resource  resource.robot
-Library  Collections
 Library  client.client_helper
+Library  String
+Library  Collections
+Library  OperatingSystem
+Library  DateTime
+Library  DebugLibrary
 
 
 *** Keywords ***
@@ -11,20 +14,20 @@ Library  client.client_helper
   Log  ${RESOURCE}
   Log  ${API_HOST_URL}
   Log  ${API_VERSION}
-  ${api_wrapper}  prepare api wrapper  admin  adminpassword  ${API_HOST_URL}  ${API_VERSION}
+  ${api_wrapper}  prepare api wrapper  ${USERNAME}  ${PASSWORD}  ${API_HOST_URL}  ${API_VERSION}
   Log Variables
+  [Return]  ${api_wrapper}
+
 
 Піготувати дані для критерії
-  #[Arguments]  ${criteria_data}
   ${criteria_data}  data for criteria
   Log  ${criteria_data}
   [Return]  ${criteria_data}
 
 Створити критерію
-  #${data}  data_for_criteria
-  ${data}  Піготувати дані для критерії
+  ${DATA}  Піготувати дані для критерії
   #${response}  create criteria  ${RESOURCE}  ${data}
   ${api_client}  Підготувати слієнт для адміністратора
-  ${response}  ${api_client}.create criteria  ${RESOURCE}  ${data}
-  log  ${response}
-  [Return]  ${response.id}
+  ${RESPONSE}  call method  ${api_client}  create_criteria  ${RESOURCE}  ${DATA}
+  log  ${RESPONSE}
+  [Return]  ${RESPONSE}

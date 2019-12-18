@@ -73,6 +73,6 @@ class ClientCriteria(object):
             auth=HTTPBasicAuth(self._username, self._password),
             headers=self.headers
         )
-        if response.status_code == 200:
-            return munchify(loads(response.text))
+        if response.status_code == 204:
+            return response.status_code
         raise InvalidResponse(response)

@@ -1,125 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 3.1.2 (Python 3.7.5 on linux)" generated="20191217 19:26:04.130" rpa="false">
+<robot generator="Robot 3.1.2 (Python 3.7.5 on linux)" generated="20191218 18:36:06.361" rpa="false">
 <suite id="s1" name="Tests" source="/home/orest.shkhumov/Criteria_test/tests.robot">
 <test id="s1-t1" name="Тест створити критерію">
-<kw name="Створити критерію" library="keywords">
-<kw name="Піготувати дані для критерії" library="keywords">
+<kw name="Створити критерію" library="base_keywords">
+<kw name="Піготувати дані для критерії" library="keywords_data">
 <assign>
-<var>${data}</var>
+<var>${DATA}</var>
 </assign>
 <kw name="Data For Criteria" library="data.init_data">
 <assign>
 <var>${criteria_data}</var>
 </assign>
-<msg timestamp="20191217 19:26:04.375" level="INFO">${criteria_data} = Munch({'name': 'Name', 'nameEng': 'Name eng', 'classification': Munch({'id': '92350000-9', 'scheme': 'ДК021', 'description': 'Послуги гральних закладів і тоталізаторів'}), 'additionalClassification': ...</msg>
-<status status="PASS" starttime="20191217 19:26:04.375" endtime="20191217 19:26:04.375"></status>
+<msg timestamp="20191218 18:36:06.818" level="FAIL">TypeError: random_int() missing 1 required positional argument: 'self'</msg>
+<status status="FAIL" starttime="20191218 18:36:06.817" endtime="20191218 18:36:06.818"></status>
 </kw>
-<kw name="Log" library="BuiltIn">
-<doc>Logs the given message with the given level.</doc>
-<arguments>
-<arg>${criteria_data}</arg>
-</arguments>
-<msg timestamp="20191217 19:26:04.376" level="INFO">Munch({'name': 'Name', 'nameEng': 'Name eng', 'classification': Munch({'id': '92350000-9', 'scheme': 'ДК021', 'description': 'Послуги гральних закладів і тоталізаторів'}), 'additionalClassification': Munch({'id': '03114100-4', 'scheme': 'ДК021', 'description': 'Солома'}), 'minValue': '11', 'maxValue': '22', 'dataType': 'number', 'unit': Munch({'name': 'millilitre of water', 'code': 'WW'})})</msg>
-<status status="PASS" starttime="20191217 19:26:04.375" endtime="20191217 19:26:04.376"></status>
+<status status="FAIL" starttime="20191218 18:36:06.817" endtime="20191218 18:36:06.819"></status>
 </kw>
-<msg timestamp="20191217 19:26:04.376" level="INFO">${data} = Munch({'name': 'Name', 'nameEng': 'Name eng', 'classification': Munch({'id': '92350000-9', 'scheme': 'ДК021', 'description': 'Послуги гральних закладів і тоталізаторів'}), 'additionalClassification': ...</msg>
-<status status="PASS" starttime="20191217 19:26:04.374" endtime="20191217 19:26:04.376"></status>
+<status status="FAIL" starttime="20191218 18:36:06.817" endtime="20191218 18:36:06.819"></status>
 </kw>
-<kw name="Підготувати слієнт для адміністратора" library="keywords">
-<assign>
-<var>${api_client}</var>
-</assign>
-<kw name="Log" library="BuiltIn">
-<doc>Logs the given message with the given level.</doc>
-<arguments>
-<arg>${RESOURCE}</arg>
-</arguments>
-<msg timestamp="20191217 19:26:04.377" level="INFO">criteria</msg>
-<status status="PASS" starttime="20191217 19:26:04.376" endtime="20191217 19:26:04.377"></status>
-</kw>
-<kw name="Log" library="BuiltIn">
-<doc>Logs the given message with the given level.</doc>
-<arguments>
-<arg>${API_HOST_URL}</arg>
-</arguments>
-<msg timestamp="20191217 19:26:04.377" level="INFO">http://localhost:8000</msg>
-<status status="PASS" starttime="20191217 19:26:04.377" endtime="20191217 19:26:04.377"></status>
-</kw>
-<kw name="Log" library="BuiltIn">
-<doc>Logs the given message with the given level.</doc>
-<arguments>
-<arg>${API_VERSION}</arg>
-</arguments>
-<msg timestamp="20191217 19:26:04.378" level="INFO">0</msg>
-<status status="PASS" starttime="20191217 19:26:04.377" endtime="20191217 19:26:04.378"></status>
-</kw>
-<kw name="Prepare Api Wrapper" library="client.client_helper">
-<arguments>
-<arg>admin</arg>
-<arg>adminpassword</arg>
-<arg>${API_HOST_URL}</arg>
-<arg>${API_VERSION}</arg>
-</arguments>
-<assign>
-<var>${api_wrapper}</var>
-</assign>
-<msg timestamp="20191217 19:26:04.378" level="INFO">${api_wrapper} = &lt;client.client_helper.StableClient object at 0x7f62aee68950&gt;</msg>
-<status status="PASS" starttime="20191217 19:26:04.378" endtime="20191217 19:26:04.378"></status>
-</kw>
-<kw name="Log Variables" library="BuiltIn">
-<doc>Logs all variables in the current scope with given log level.</doc>
-<msg timestamp="20191217 19:26:04.379" level="INFO">${/} = /</msg>
-<msg timestamp="20191217 19:26:04.379" level="INFO">${:} = :</msg>
-<msg timestamp="20191217 19:26:04.379" level="INFO">${\n} = 
-</msg>
-<msg timestamp="20191217 19:26:04.379" level="INFO">${API_HOST_URL} = http://localhost:8000</msg>
-<msg timestamp="20191217 19:26:04.380" level="INFO">${API_VERSION} = 0</msg>
-<msg timestamp="20191217 19:26:04.380" level="INFO">${api_wrapper} = &lt;client.client_helper.StableClient object at 0x7f62aee68950&gt;</msg>
-<msg timestamp="20191217 19:26:04.380" level="INFO">${DEBUG_FILE} = NONE</msg>
-<msg timestamp="20191217 19:26:04.380" level="INFO">${EXECDIR} = /home/orest.shkhumov/Criteria_test</msg>
-<msg timestamp="20191217 19:26:04.380" level="INFO">${False} = False</msg>
-<msg timestamp="20191217 19:26:04.380" level="INFO">${LOG_FILE} = /home/orest.shkhumov/Criteria_test/log.html</msg>
-<msg timestamp="20191217 19:26:04.380" level="INFO">${LOG_LEVEL} = INFO</msg>
-<msg timestamp="20191217 19:26:04.380" level="INFO">${None} = None</msg>
-<msg timestamp="20191217 19:26:04.380" level="INFO">${null} = None</msg>
-<msg timestamp="20191217 19:26:04.380" level="INFO">${OUTPUT_DIR} = /home/orest.shkhumov/Criteria_test</msg>
-<msg timestamp="20191217 19:26:04.380" level="INFO">${OUTPUT_FILE} = /home/orest.shkhumov/Criteria_test/output.xml</msg>
-<msg timestamp="20191217 19:26:04.380" level="INFO">${PREV_TEST_MESSAGE} = </msg>
-<msg timestamp="20191217 19:26:04.380" level="INFO">${PREV_TEST_NAME} = </msg>
-<msg timestamp="20191217 19:26:04.380" level="INFO">${PREV_TEST_STATUS} = </msg>
-<msg timestamp="20191217 19:26:04.380" level="INFO">${REPORT_FILE} = /home/orest.shkhumov/Criteria_test/report.html</msg>
-<msg timestamp="20191217 19:26:04.380" level="INFO">${RESOURCE} = criteria</msg>
-<msg timestamp="20191217 19:26:04.381" level="INFO">${SPACE} =  </msg>
-<msg timestamp="20191217 19:26:04.381" level="INFO">${SUITE_DOCUMENTATION} = </msg>
-<msg timestamp="20191217 19:26:04.381" level="INFO">&amp;{SUITE_METADATA} = { }</msg>
-<msg timestamp="20191217 19:26:04.381" level="INFO">${SUITE_NAME} = Tests</msg>
-<msg timestamp="20191217 19:26:04.381" level="INFO">${SUITE_SOURCE} = /home/orest.shkhumov/Criteria_test/tests.robot</msg>
-<msg timestamp="20191217 19:26:04.381" level="INFO">${TEMPDIR} = /tmp</msg>
-<msg timestamp="20191217 19:26:04.381" level="INFO">${TEST_DOCUMENTATION} = </msg>
-<msg timestamp="20191217 19:26:04.381" level="INFO">${TEST_NAME} = Тест створити критерію</msg>
-<msg timestamp="20191217 19:26:04.381" level="INFO">@{TEST_TAGS} = [ ]</msg>
-<msg timestamp="20191217 19:26:04.381" level="INFO">${True} = True</msg>
-<status status="PASS" starttime="20191217 19:26:04.378" endtime="20191217 19:26:04.381"></status>
-</kw>
-<msg timestamp="20191217 19:26:04.381" level="INFO">${api_client} = None</msg>
-<status status="PASS" starttime="20191217 19:26:04.376" endtime="20191217 19:26:04.381"></status>
-</kw>
-<kw name="${api_client}.create criteria">
-<arguments>
-<arg>${RESOURCE}</arg>
-<arg>${data}</arg>
-</arguments>
-<assign>
-<var>${response}</var>
-</assign>
-<msg timestamp="20191217 19:26:04.385" level="FAIL">No keyword with name '${api_client}.create criteria' found.</msg>
-<status status="FAIL" starttime="20191217 19:26:04.385" endtime="20191217 19:26:04.385"></status>
-</kw>
-<status status="FAIL" starttime="20191217 19:26:04.374" endtime="20191217 19:26:04.385"></status>
-</kw>
-<status status="FAIL" starttime="20191217 19:26:04.373" endtime="20191217 19:26:04.385" critical="yes">No keyword with name '${api_client}.create criteria' found.</status>
+<status status="FAIL" starttime="20191218 18:36:06.816" endtime="20191218 18:36:06.819" critical="yes">TypeError: random_int() missing 1 required positional argument: 'self'</status>
 </test>
-<status status="FAIL" starttime="20191217 19:26:04.132" endtime="20191217 19:26:04.386"></status>
+<status status="FAIL" starttime="20191218 18:36:06.362" endtime="20191218 18:36:06.819"></status>
 </suite>
 <statistics>
 <total>
