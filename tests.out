@@ -1,0 +1,13 @@
+==============================================================================
+Tests                                                                         
+==============================================================================
+Тест створити критерію                                                | FAIL |
+TypeError: random_int() missing 1 required positional argument: 'self'
+------------------------------------------------------------------------------
+Tests                                                                 | FAIL |
+1 critical test, 0 passed, 1 failed
+1 test total, 0 passed, 1 failed
+==============================================================================
+Output:  /home/orest.shkhumov/Criteria_test/output.xml
+Log:     /home/orest.shkhumov/Criteria_test/log.html
+Report:  /home/orest.shkhumov/Criteria_test/report.html

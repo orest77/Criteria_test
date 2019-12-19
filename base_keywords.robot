@@ -3,44 +3,37 @@ Library  Collections
 Resource  client/keywords_api.robot
 Resource  data/keywords_data.robot
 
+
 *** Keywords ***
-Створити критерію
+Можливість cтворити критерію
   ${DATA}  Піготувати дані для критерії
-  ${api_client}  Підготувати слієнт для адміністратора
-  ${RESPONSE}  call method  ${api_client}  create_criteria  ${RESOURCE}  ${DATA}
+  #${api_client}  Підготувати слієнт для адміністратора
+  ${RESPONSE}  Створити критерію  ${DATA}
+  Set Suite Variable  ${ID_CRITERIA}  ${RESPONSE.id}
+  [Return]  ${RESPONSE}
+
+Можливість переглядати список критеріїв
+  ${RESPONSE}  Переглядати список критеріїв
   log  ${RESPONSE}
   Log Variables
   [Return]  ${RESPONSE}
 
-Переглядати список критеріїв
-  ${api_client}  Підготувати слієнт для адміністратора
-  ${RESPONSE}  call method  ${api_client}  get_criteria  ${RESOURCE}
+Можливість переглядати критерію
+  ${RESPONSE}  Переглядати критерію  ${ID_CRITERIA}
   log  ${RESPONSE}
   Log Variables
   [Return]  ${RESPONSE}
 
-Переглядати критерію
-  ${CRITERIA}  Створити критерію
-  ${api_client}  Підготувати слієнт для адміністратора
-  ${RESPONSE}  call method  ${api_client}  get_criteria  ${RESOURCE}  ${CRITERIA.id}
+Можливість змінити критерію
+  ${EDIT_DATA}  Підготувати дані для редагування
+  ${RESPONSE}  Змінити критерію  ${ID_CRITERIA}  ${EDIT_DATA}
   log  ${RESPONSE}
   Log Variables
   [Return]  ${RESPONSE}
 
-
-Змінити критерію
-  ${api_client}  Підготувати слієнт для адміністратора
-  ${edit_data}  Підготувати дані для редагування
-  ${CRITERIA}  Переглядати критерію
-  ${RESPONSE}  call method  ${api_client}  update_criteria  ${CRITERIA.id}  ${RESOURCE}  ${edit_data}
+Можливість видаляти критерію
+  ${RESPONSE}  Видаляти критерію  ${ID_CRITERIA}
   log  ${RESPONSE}
   Log Variables
   [Return]  ${RESPONSE}
 
-Видаляти критерію
-  ${api_client}  Підготувати слієнт для адміністратора
-  ${CRITERIA}  Переглядати критерію
-  ${RESPONSE}  call method  ${api_client}  delete_criteria  ${CRITERIA.id}  ${RESOURCE}
-  log  ${RESPONSE}
-  Log Variables
-  [Return]  ${RESPONSE}

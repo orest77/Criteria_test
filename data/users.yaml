@@ -1,0 +1,7 @@
+users:
+  Admin:
+    api_key_for_admin: adminpassword
+    admin_name:  admin
+  User:
+    api_key_for_user:  userpassword
+    user_name:  user

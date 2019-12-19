@@ -123,7 +123,7 @@ def create_fake_IsoDurationType(
 def data_for_criteria():
     return munchify(
         {
-            "name": create_fake_title(),
+            "name": "Tester",
             "nameEng": "Name eng",
             "classification": {
                 "id": "92350000-9",
