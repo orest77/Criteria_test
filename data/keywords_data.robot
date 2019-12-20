@@ -3,11 +3,11 @@ Library  data.init_data
 
 *** Keywords ***
 Піготувати дані для критерії
-  ${criteria_data}  data for criteria
-  log  ${criteria_data}
-  [Return]  ${criteria_data}
+  ${CRITERIA_DATA}  data for criteria
+  log  ${CRITERIA_DATA}
+  [Return]  ${CRITERIA_DATA}
 
 Підготувати дані для редагування
-  ${edit_data}  data_for_edit
-  log  ${edit_data}
-  [Return]  ${edit_data}
+  ${EDIT_DATA}  data_for_edit
+  log  ${EDIT_DATA}
+  [Return]  ${EDIT_DATA}

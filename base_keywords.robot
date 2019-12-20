@@ -6,34 +6,43 @@ Resource  data/keywords_data.robot
 
 *** Keywords ***
 Можливість cтворити критерію
-  ${DATA}  Піготувати дані для критерії
-  #${api_client}  Підготувати слієнт для адміністратора
-  ${RESPONSE}  Створити критерію  ${DATA}
-  Set Suite Variable  ${ID_CRITERIA}  ${RESPONSE.id}
+  [Arguments]  ${username}
+  ${CRITERIA_DATA}  Піготувати дані для критерії
+  Set Suite Variable  ${CRITERIA_DATA}
+  ${RESPONSE}  Створити критерію  ${CRITERIA_DATA}  ${username}
+  Set Suite Variable  ${ID_CRITERIA}  ${RESPONSE}
   [Return]  ${RESPONSE}
 
 Можливість переглядати список критеріїв
-  ${RESPONSE}  Переглядати список критеріїв
+  [Arguments]  ${username}
+  ${RESPONSE}  Переглядати список критеріїв  ${username}
   log  ${RESPONSE}
   Log Variables
   [Return]  ${RESPONSE}
 
 Можливість переглядати критерію
-  ${RESPONSE}  Переглядати критерію  ${ID_CRITERIA}
+  [Arguments]  ${username}
+  ${RESPONSE}  Переглядати критерію  ${ID_CRITERIA}  ${username}
   log  ${RESPONSE}
   Log Variables
   [Return]  ${RESPONSE}
 
 Можливість змінити критерію
+  [Arguments]  ${username}
   ${EDIT_DATA}  Підготувати дані для редагування
-  ${RESPONSE}  Змінити критерію  ${ID_CRITERIA}  ${EDIT_DATA}
+  Set Suite Variable  ${EDIT_DATA}
+  ${RESPONSE}  Змінити критерію  ${ID_CRITERIA}  ${EDIT_DATA}  ${username}
   log  ${RESPONSE}
   Log Variables
   [Return]  ${RESPONSE}
 
 Можливість видаляти критерію
-  ${RESPONSE}  Видаляти критерію  ${ID_CRITERIA}
+  [Arguments]  ${username}
+  ${RESPONSE}  Видаляти критерію  ${ID_CRITERIA}  ${username}
   log  ${RESPONSE}
   Log Variables
   [Return]  ${RESPONSE}
+
+
+#################################################
 

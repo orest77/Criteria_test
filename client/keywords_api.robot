@@ -1,9 +1,15 @@
 *** Settings ***
 Library  client.client_helper
+Library  service_keywords
+Library  String
+Library  Collections
+Library  OperatingSystem
+Library  DateTime
+Library  DebugLibrary
 Resource  resource.robot
 
 *** Keywords ***
-Підготувати слієнт для адміністратора
+Підготувати слієнт
   Log  ${RESOURCE}
   Log  ${API_HOST_URL}
   Log  ${API_VERSION}
@@ -11,38 +17,46 @@ Resource  resource.robot
   Set Suite Variable  ${API_CLIENT}
   Log Variables
 
+Підготувати клієнт для користувача
+  ${USERS}  load_data_from  users.yaml
+  :FOR  ${username}  IN  @{USED_ROLES}
+  \  ${api_wraper}  prepare api wrapper  ${USERS.users.${username}.user_name}  ${USERS.users.${username}.api_key}  ${API_HOST_URL}  ${API_VERSION}
+  \  set to dictionary  ${USERS.users.${username}}  client=${api_wraper}
+  set suite variable  ${USERS}
+
 
 Створити критерію
-  [Arguments]  ${DATA}
-  ${RESPONSE}  call method  ${API_CLIENT}  create_criteria  ${RESOURCE}  ${DATA}
+  [Arguments]  ${DATA}  ${username}
+  ${RESPONSE}  call method  ${USERS.users.${username}.client}  create_criteria  ${RESOURCE}  ${DATA}
   log  ${RESPONSE}
   Log Variables
-  [Return]  ${RESPONSE}
+  [Return]  ${RESPONSE.id}
 
 Переглядати список критеріїв
-  ${RESPONSE}  call method  ${API_CLIENT}  get_criteria  ${RESOURCE}
+  [Arguments]  ${username}
+  ${RESPONSE}  call method  ${USERS.users.${username}.client}  get_criteria  ${RESOURCE}
   log  ${RESPONSE}
   Log Variables
   [Return]  ${RESPONSE}
 
 Переглядати критерію
-  [Arguments]  ${ID}
-  ${RESPONSE}  call method  ${API_CLIENT}  get_criteria  ${RESOURCE}  ${ID}
+  [Arguments]  ${ID}  ${username}
+  ${RESPONSE}  call method  ${USERS.users.${username}.client}  get_criteria  ${RESOURCE}  ${ID}
   log  ${RESPONSE}
   Log Variables
   [Return]  ${RESPONSE}
 
 
 Змінити критерію
-  [Arguments]  ${ID}  ${EDIT_DATA}
-  ${RESPONSE}  call method  ${API_CLIENT}  update_criteria  ${ID}  ${RESOURCE}  ${EDIT_DATA}
+  [Arguments]  ${ID}  ${EDIT_DATA}  ${username}
+  ${RESPONSE}  call method  ${USERS.users.${username}.client}  update_criteria  ${ID}  ${RESOURCE}  ${EDIT_DATA}
   log  ${RESPONSE}
   Log Variables
   [Return]  ${RESPONSE}
 
 Видаляти критерію
-  [Arguments]  ${ID}
-  ${RESPONSE}  call method  ${API_CLIENT}  delete_criteria  ${ID}  ${RESOURCE}
+  [Arguments]  ${ID}  ${username}
+  ${RESPONSE}  call method  ${USERS.users.${username}.client}  delete_criteria  ${ID}  ${RESOURCE}
   log  ${RESPONSE}
   Log Variables
   [Return]  ${RESPONSE}
