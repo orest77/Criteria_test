@@ -123,7 +123,7 @@ def create_fake_IsoDurationType(
 def data_for_criteria():
     return munchify(
         {
-            "name": "Tester",
+            "name": "Tester2",
             "nameEng": "Name eng",
             "classification": {
                 "id": "92350000-9",
@@ -135,8 +135,8 @@ def data_for_criteria():
                 "scheme": "ДК021",
                 "description": "Солома"
             },
-            "minValue": "11",
-            "maxValue": "22",
+            "minValue": "11.0",
+            "maxValue": "22.0",
             "dataType": "number",
             "unit": {
                 "name": "millilitre of water",
@@ -149,9 +149,10 @@ def data_for_criteria():
 def data_for_edit():
     return munchify(
         {
-            "name": "Name123",
-            "minValue": "11",
-            "maxValue": "23",
+            "name": "Test",
+            "nameEng": "Test eng",
+            "minValue": "10.0",
+            "maxValue": "23.0",
             "status": "active"
         }
     )

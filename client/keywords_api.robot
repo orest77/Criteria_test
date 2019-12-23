@@ -9,14 +9,6 @@ Library  DebugLibrary
 Resource  resource.robot
 
 *** Keywords ***
-Підготувати слієнт
-  Log  ${RESOURCE}
-  Log  ${API_HOST_URL}
-  Log  ${API_VERSION}
-  ${API_CLIENT}  prepare api wrapper  ${USERNAME}  ${PASSWORD}  ${API_HOST_URL}  ${API_VERSION}
-  Set Suite Variable  ${API_CLIENT}
-  Log Variables
-
 Підготувати клієнт для користувача
   ${USERS}  load_data_from  users.yaml
   :FOR  ${username}  IN  @{USED_ROLES}
