@@ -54,17 +54,35 @@ Resource  data/keywords_data.robot
   ${get_criteria}  Можливість переглядати критерію  ${user_name}
   Порівняти дані критерії  ${get_criteria}  ${CRITERIA_DATA}
 
-
-
 Перевірити редагування критерії
     [Arguments]  ${user_name}
     ${get_criteria}  Можливість переглядати критерію  ${user_name}
     Порівнняти редаговані дані  ${get_criteria}  ${EDIT_DATA}
 
+Перевірити список критерій
+  [Arguments]  ${user_name}
+  ${get_griteries}  Можливість переглядати список критеріїв  ${user_name}
+  Звірити всі критерії з підрахунком  ${get_griteries}
+
+Перевірити чи критерія видалена
+  [Arguments]  ${user_name}
+  ${get_criteria}  Run Keyword And Expect Error  *  Можливість переглядати критерію  ${user_name}
+  log  ${get_criteria}
+  Спроба знайти видалену критерію  ${get_criteria}
 
 ##################
 #####ASSERT######
 ################
+Спроба знайти видалену критерію
+  [Arguments]  ${actual_result}
+  should contain  ${actual_result}  Not found.
+
+Звірити всі критерії з підрахунком
+  [Arguments]  ${actual_result}
+  ${expected}  get variable value  ${actual_result.count}
+  ${actual}  get length  ${actual_result.results}
+  log  ${actual}
+  should be equal  ${actual}  ${actual}
 
 Порівняти дані критерії
   [Arguments]  ${actual_resul}  ${expected_result}
@@ -74,7 +92,6 @@ Resource  data/keywords_data.robot
   remove from dictionary  ${actual_resul}  status
   remove from dictionary  ${actual_resul}  dateModified
   dictionaries should be equal  ${actual_resul}  ${expected_result}  msg=Objects are not equal
-
 
 Порівнняти редаговані дані
   [Arguments]  ${actual_resul}  ${expected_result}
