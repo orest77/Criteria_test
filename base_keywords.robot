@@ -22,10 +22,10 @@ Resource  data/keywords_data.robot
 
 Можливість переглядати критерію
   [Arguments]  ${user_name}
-  ${GET_RESPONSE_ID}  Переглядати критерію  ${ID_CRITERIA}  ${user_name}
-  log  ${GET_RESPONSE_ID}
+  ${GET_RESPONSE_BY_ID}  Переглядати критерію  ${ID_CRITERIA}  ${user_name}
+  log  ${GET_RESPONSE_BY_ID}
   Log Variables
-  [Return]  ${GET_RESPONSE_ID}
+  [Return]  ${GET_RESPONSE_BY_ID}
 
 Можливість змінити критерію
   [Arguments]  ${user_name}
@@ -43,11 +43,40 @@ Resource  data/keywords_data.robot
   Log Variables
   [Return]  ${RESPONSE}
 
+Можливість переглядати статус критерій
+  [Arguments]  ${user_name}  ${status}
+  ${GET_RESPONSE}  Переглянути статус критерій  ${status}  ${user_name}
+  log  ${GET_RESPONSE}
+  Log Variables
+  [Return]  ${GET_RESPONSE}
+
+Можливість змінити статус критерію
+  [Arguments]  ${user_name}
+  ${STATUS_DATA}  Підготувати дані для редагування
+  set to dictionary  ${STATUS_DATA}  status=retired
+  set suite variable  ${STATUS_DATA}
+  ${PATCH_RESPONSE}  Змінити критерію  ${ID_CRITERIA}  ${STATUS_DATA}  ${user_name}
+  log  ${PATCH_RESPONSE}
+  set suite variable  ${PATCH_RESPONSE}
+  [Return]  ${PATCH_RESPONSE}
 
 #################################################
 ########Перевірки для критерії##################
 ###############################################
 
+#
+Перевірити чи критерія появилася в статусі відхиленої
+  [Arguments]  ${user_name}
+  ${get_status_criteria}  Можливість переглядати статус критерій  ${user_name}  ${STATUS_RETIRED}
+  log  ${get_status_criteria}
+  #Перевірити присутність критерії в статусі відхилена  ${get_status_criteria}  ${ID_CRITERIA}
+
+Перевірити критерію на зміну статусу
+  [Arguments]  ${user_name}
+  ${get_status_criteria}  Можливість змінити статус критерію  ${user_name}
+  log  ${get_status_criteria}
+  #Порівнняти відредаговані дані  ${get_status_criteria}  ${STATUS_DATA}
+#
 Перевірити створену критерію
   [Arguments]  ${user_name}
   ${get_criteria}  Можливість переглядати критерію  ${user_name}
@@ -56,7 +85,7 @@ Resource  data/keywords_data.robot
 Перевірити редагування критерії
     [Arguments]  ${user_name}
     ${get_criteria}  Можливість переглядати критерію  ${user_name}
-    Порівнняти редаговані дані  ${get_criteria}  ${EDIT_DATA}
+    Порівнняти відредаговані дані  ${get_criteria}  ${EDIT_DATA}
 
 Перевірити список критерій
   [Arguments]  ${user_name}
@@ -92,6 +121,10 @@ Resource  data/keywords_data.robot
 #####ASSERT######
 ################
 
+Перевірити присутність критерії в статусі відхилена
+  [Arguments]  ${actual_result}  ${expected_result}
+  list should contain value  ${actual_result.results}   ${expected_result}
+
 Звірити повідомення про помилку
   [Arguments]  ${actual_result}  ${expeted_result}
   should contain  ${actual_result}  ${expeted_result}
@@ -113,7 +146,7 @@ Resource  data/keywords_data.robot
   remove from dictionary  ${actual_resul}  dateModified
   dictionaries should be equal  ${actual_resul}  ${expected_result}  msg=Objects are not equal
 
-Порівнняти редаговані дані
+Порівнняти відредаговані дані
   [Arguments]  ${actual_resul}  ${expected_result}
   log  ${actual_resul}
   log  ${expected_result}

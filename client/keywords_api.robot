@@ -53,3 +53,10 @@ Resource  resource.robot
   Log Variables
   [Return]  ${RESPONSE}
 
+Переглянути статус критерій
+  [Arguments]  ${STATUS}  ${username}
+  ${RESPONSE}  call method  ${USERS.users.${username}.client}  get_status  ${RESOURCE}  ${STATUS}
+  log  ${RESPONSE}
+  Log Variables
+  [Return]  ${RESPONSE}
+

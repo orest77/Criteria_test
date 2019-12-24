@@ -39,6 +39,16 @@ class ClientCriteria(object):
             return munchify(loads(response.text))
         raise InvalidResponse(response)
 
+    def get_status(self, path='', status_path=None):
+        response = requests.get(
+            url=self.url + path + '/' + status_path,
+            auth=HTTPBasicAuth(self._username, self._password),
+            headers=self.headers,
+        )
+        if response.status_code == 200:
+            return munchify(loads(response.text))
+        raise InvalidResponse(response)
+
     ######Method POST########################
 
     def create_criteria(self, path='', data={}):
