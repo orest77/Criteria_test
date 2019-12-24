@@ -11,7 +11,6 @@ Resource  data/keywords_data.robot
   Set Suite Variable  ${CRITERIA_DATA}
   ${RESPONSE}  Створити критерію  ${CRITERIA_DATA}  ${user_name}
   Set Suite Variable  ${ID_CRITERIA}  ${RESPONSE}
-  Set Suite Variable  ${RESPONSE}
   [Return]  ${RESPONSE}
 
 Можливість переглядати список критеріїв
@@ -64,18 +63,39 @@ Resource  data/keywords_data.robot
   ${get_griteries}  Можливість переглядати список критеріїв  ${user_name}
   Звірити всі критерії з підрахунком  ${get_griteries}
 
+Перевірити відсутність доступу користувача до створення критерії
+  [Arguments]  ${user_name}
+  ${create_criteria}  Run Keyword And Expect Error  *  Можливість cтворити критерію  ${user_name}
+  ${expected_result}  convert to string  You do not have permission to perform this action.
+  Звірити повідомення про помилку  ${create_criteria}  ${expected_result}
+
+Перевірити відсутність доступу користувача до змінити критерію
+  [Arguments]  ${user_name}
+  ${create_criteria}  Run Keyword And Expect Error  *  Можливість змінити критерію  ${user_name}
+  ${expected_result}  convert to string  You do not have permission to perform this action.
+  Звірити повідомення про помилку  ${create_criteria}  ${expected_result}
+
+Перевірити відсутність доступу користувача до видалення критерії
+  [Arguments]  ${user_name}
+  ${create_criteria}  Run Keyword And Expect Error  *  Можливість видаляти критерію  ${user_name}
+  ${expected_result}  convert to string  You do not have permission to perform this action.
+  Звірити повідомення про помилку  ${create_criteria}  ${expected_result}
+
 Перевірити чи критерія видалена
   [Arguments]  ${user_name}
   ${get_criteria}  Run Keyword And Expect Error  *  Можливість переглядати критерію  ${user_name}
-  log  ${get_criteria}
-  Спроба знайти видалену критерію  ${get_criteria}
+  ${expected_result}  convert to string  Not found.
+  Звірити повідомення про помилку  ${get_criteria}  ${expected_result}
+
 
 ##################
 #####ASSERT######
 ################
-Спроба знайти видалену критерію
-  [Arguments]  ${actual_result}
-  should contain  ${actual_result}  Not found.
+
+Звірити повідомення про помилку
+  [Arguments]  ${actual_result}  ${expeted_result}
+  should contain  ${actual_result}  ${expeted_result}
+
 
 Звірити всі критерії з підрахунком
   [Arguments]  ${actual_result}

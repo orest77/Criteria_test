@@ -5,3 +5,6 @@ ${API_VERSION}   0
 ${USERNAME}  admin
 ${PASSWORD}  adminpassword
 ${USERS_FILE}  data
+${STATUS_RETIRED}  ?status=retired
+${STATUS_ACTIVE}  ?status=active
+${STATUS_ALL}  ?status=all
