@@ -69,13 +69,13 @@ Resource  data/keywords_data.robot
   [Arguments]  ${user_name}
   ${get_status_criteria}  Можливість переглядати статус критерій  ${user_name}  ${STATUS_RETIRED}
   log  ${get_status_criteria}
-  #Перевірити присутність критерії в статусі відхилена  ${get_status_criteria}  ${ID_CRITERIA}
+  Перевірити присутність критерії в статусі відхилена  ${get_status_criteria}  ${ID_CRITERIA}
 
 Перевірити критерію на зміну статусу
   [Arguments]  ${user_name}
   ${get_status_criteria}  Можливість змінити статус критерію  ${user_name}
   log  ${get_status_criteria}
-  #Порівнняти відредаговані дані  ${get_status_criteria}  ${STATUS_DATA}
+  Порівнняти відредаговані дані  ${get_status_criteria}  ${STATUS_DATA}
 #
 Перевірити створену критерію
   [Arguments]  ${user_name}
@@ -112,18 +112,28 @@ Resource  data/keywords_data.robot
 
 Перевірити чи критерія видалена
   [Arguments]  ${user_name}
-  ${get_criteria}  Run Keyword And Expect Error  *  Можливість переглядати критерію  ${user_name}
-  ${expected_result}  convert to string  Not found.
-  Звірити повідомення про помилку  ${get_criteria}  ${expected_result}
-
+  ${get_criteria}  Можливість переглядати критерію  ${user_name}
+  log  ${get_criteria.status}
+  Перевірити статус критерії  ${get_criteria}
 
 ##################
 #####ASSERT######
 ################
 
+Перевірити статус критерії
+  [Arguments]  ${actual_result}
+  should be equal  ${actual_result.status}  retired
+
 Перевірити присутність критерії в статусі відхилена
   [Arguments]  ${actual_result}  ${expected_result}
-  list should contain value  ${actual_result.results}   ${expected_result}
+  ${index}  convert to integer  0
+  ${actual}  convert to boolean  0
+  :FOR  ${result}  IN  ${actual_result.results}
+  \  ${actual}=  exit for loop if  '${actual_result.results[${index}].id}' == '${expected_result}'
+  \  ${index}  ${index + 1}
+  log  ${actual}
+  should be true  ${actual}
+
 
 Звірити повідомення про помилку
   [Arguments]  ${actual_result}  ${expeted_result}

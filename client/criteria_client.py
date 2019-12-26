@@ -83,6 +83,6 @@ class ClientCriteria(object):
             auth=HTTPBasicAuth(self._username, self._password),
             headers=self.headers
         )
-        if response.status_code == 204:
+        if response.status_code == 200:
             return response.status_code
         raise InvalidResponse(response)
