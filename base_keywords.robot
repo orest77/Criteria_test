@@ -136,9 +136,12 @@ Resource  data/keywords_data.robot
 
 Перевірити цілісність критерій
   [Arguments]  ${first}  ${second}
+  should not be equal  ${first.dateModified}  ${second.dateModified}
   remove from dictionary  ${first}  status
   remove from dictionary  ${second}  status
-
+  remove from dictionary  ${first}  dateModified
+  remove from dictionary  ${second}  dateModified
+  should be equal  ${first}  ${second}
 
 Перевірити статус критерії
   [Arguments]  ${actual_result}
