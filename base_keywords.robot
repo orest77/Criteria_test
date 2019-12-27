@@ -76,8 +76,21 @@ Resource  data/keywords_data.robot
   log  ${get_status_criteria}
   Порівнняти відредаговані дані  ${get_status_criteria}  ${STATUS_DATA}
 
+Перевірка цілісності даних критерії при змінювані статусу
+  [Arguments]  ${user_name}
+  ${get_criteria}  Можливість переглядати критерію  ${user_name}
+  ${STATUS_DATA_RETIRED}  Підготувати дані для редагування
+  set to dictionary  ${STATUS_DATA_RETIRED}  status=retired
+  Змінити критерію  ${get_criteria.id}  ${STATUS_DATA_RETIRED}  admin
+  ${GET_RESPONSE_RETIRED}  Переглядати критерію  ${get_criteria.id}  ${user_name}
+  ${responses}  create dictionary  first=${GET_RESPONSE_RETIRED}
+  set to dictionary  ${STATUS_DATA_RETIRED}  status=active
+  Змінити критерію  ${get_criteria.id}  ${STATUS_DATA_RETIRED}  admin
+  ${GET_RESPONSE_ACTIVE}  Переглядати критерію  ${get_criteria.id}  ${user_name}
+  set to dictionary  ${responses}  second=${GET_RESPONSE_ACTIVE}
+  Перевірити цілісність критерій  ${responses.first}  ${responses.second}
+#########
 
-#
 Перевірити створену критерію
   [Arguments]  ${user_name}
   ${get_criteria}  Можливість переглядати критерію  ${user_name}
@@ -99,7 +112,7 @@ Resource  data/keywords_data.robot
   ${expected_result}  convert to string  You do not have permission to perform this action.
   Звірити повідомення про помилку  ${create_criteria}  ${expected_result}
 
-Перевірити відсутність доступу користувача до змінити критерію
+Перевірити відсутність доступу користувача до зміни критерії
   [Arguments]  ${user_name}
   ${create_criteria}  Run Keyword And Expect Error  *  Можливість змінити критерію  ${user_name}
   ${expected_result}  convert to string  You do not have permission to perform this action.
@@ -120,6 +133,12 @@ Resource  data/keywords_data.robot
 ##################
 #####ASSERT######
 ################
+
+Перевірити цілісність критерій
+  [Arguments]  ${first}  ${second}
+  remove from dictionary  ${first}  status
+  remove from dictionary  ${second}  status
+
 
 Перевірити статус критерії
   [Arguments]  ${actual_result}
