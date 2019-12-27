@@ -76,6 +76,7 @@ Resource  data/keywords_data.robot
   log  ${get_status_criteria}
   Порівнняти відредаговані дані  ${get_status_criteria}  ${STATUS_DATA}
 
+#########
 Перевірка цілісності даних критерії при змінювані статусу
   [Arguments]  ${user_name}
   ${get_criteria}  Можливість переглядати критерію  ${user_name}
@@ -136,12 +137,16 @@ Resource  data/keywords_data.robot
 
 Перевірити цілісність критерій
   [Arguments]  ${first}  ${second}
-  should not be equal  ${first.dateModified}  ${second.dateModified}
+  should not be equal  ${first.dateModified}  ${second.dateModified}  msg=dateModified are not equal
+  should be equal  ${first.status}  retired
+  should be equal  ${second.status}  active
   remove from dictionary  ${first}  status
-  remove from dictionary  ${second}  status
   remove from dictionary  ${first}  dateModified
+  remove from dictionary  ${second}  status
   remove from dictionary  ${second}  dateModified
-  should be equal  ${first}  ${second}
+  log  ${first}
+  log  ${second}
+  should be equal  ${first}  ${second}  msg=DATA without status and  dateModified are not equal
 
 Перевірити статус критерії
   [Arguments]  ${actual_result}

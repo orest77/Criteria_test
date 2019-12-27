@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from faker.providers import BaseProvider
 from faker.generator import random
+from faker.providers import BaseProvider
 from copy import deepcopy
 from munch import Munch
 from json import load
