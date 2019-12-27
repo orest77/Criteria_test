@@ -44,16 +44,16 @@ Resource  data/keywords_data.robot
   [Return]  ${RESPONSE}
 
 Можливість переглядати статус критерій
-  [Arguments]  ${user_name}  ${status}
-  ${GET_RESPONSE}  Переглянути статус критерій  ${status}  ${user_name}
+  [Arguments]  ${user_name}  ${status_url}
+  ${GET_RESPONSE}  Переглянути статус критерій  ${status_url}  ${user_name}
   log  ${GET_RESPONSE}
   Log Variables
   [Return]  ${GET_RESPONSE}
 
-Можливість змінити статус критерію
-  [Arguments]  ${user_name}
+Можливість змінити статус критерії
+  [Arguments]  ${user_name}  ${status}
   ${STATUS_DATA}  Підготувати дані для редагування
-  set to dictionary  ${STATUS_DATA}  status=retired
+  set to dictionary  ${STATUS_DATA}  status=${status}
   set suite variable  ${STATUS_DATA}
   ${PATCH_RESPONSE}  Змінити критерію  ${ID_CRITERIA}  ${STATUS_DATA}  ${user_name}
   log  ${PATCH_RESPONSE}
@@ -65,17 +65,18 @@ Resource  data/keywords_data.robot
 ###############################################
 
 #
-Перевірити чи критерія появилася в статусі відхиленої
-  [Arguments]  ${user_name}
-  ${get_status_criteria}  Можливість переглядати статус критерій  ${user_name}  ${STATUS_RETIRED}
-  log  ${get_status_criteria}
-  Перевірити присутність критерії в статусі відхилена  ${get_status_criteria}  ${ID_CRITERIA}
+Перевірити чи критерія появилася в статусі
+  [Arguments]  ${user_name}  ${status_path}
+  ${get_status_criteria}  Можливість переглядати статус критерій  ${user_name}  ${status_path}
+  Перевірити присутність критерії по статусу  ${get_status_criteria}  ${ID_CRITERIA}
 
 Перевірити критерію на зміну статусу
-  [Arguments]  ${user_name}
-  ${get_status_criteria}  Можливість змінити статус критерію  ${user_name}
+  [Arguments]  ${user_name}  ${status}
+  ${get_status_criteria}  Можливість змінити статус критерії  ${user_name}  ${status}
   log  ${get_status_criteria}
   Порівнняти відредаговані дані  ${get_status_criteria}  ${STATUS_DATA}
+
+
 #
 Перевірити створену критерію
   [Arguments]  ${user_name}
@@ -83,9 +84,9 @@ Resource  data/keywords_data.robot
   Порівняти дані критерії  ${get_criteria}  ${CRITERIA_DATA}
 
 Перевірити редагування критерії
-    [Arguments]  ${user_name}
-    ${get_criteria}  Можливість переглядати критерію  ${user_name}
-    Порівнняти відредаговані дані  ${get_criteria}  ${EDIT_DATA}
+  [Arguments]  ${user_name}
+  ${get_criteria}  Можливість переглядати критерію  ${user_name}
+  Порівнняти відредаговані дані  ${get_criteria}  ${EDIT_DATA}
 
 Перевірити список критерій
   [Arguments]  ${user_name}
@@ -124,7 +125,7 @@ Resource  data/keywords_data.robot
   [Arguments]  ${actual_result}
   should be equal  ${actual_result.status}  retired
 
-Перевірити присутність критерії в статусі відхилена
+Перевірити присутність критерії по статусу
   [Arguments]  ${actual_result}  ${expected_result}
   ${index}  convert to integer  0
   ${actual}  convert to boolean  0
