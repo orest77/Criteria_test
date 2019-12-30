@@ -80,11 +80,12 @@ Resource  data/keywords_data.robot
 Перевірка цілісності даних критерії при змінювані статусу
   [Arguments]  ${user_name}
   ${get_criteria}  Можливість переглядати критерію  ${user_name}
+  ${responses}  create dictionary
   ${STATUS_DATA_RETIRED}  Підготувати дані для редагування
   set to dictionary  ${STATUS_DATA_RETIRED}  status=retired
   Змінити критерію  ${get_criteria.id}  ${STATUS_DATA_RETIRED}  admin
   ${GET_RESPONSE_RETIRED}  Переглядати критерію  ${get_criteria.id}  ${user_name}
-  ${responses}  create dictionary  first=${GET_RESPONSE_RETIRED}
+  set to dictionary  ${responses}  first=${GET_RESPONSE_RETIRED}
   set to dictionary  ${STATUS_DATA_RETIRED}  status=active
   Змінити критерію  ${get_criteria.id}  ${STATUS_DATA_RETIRED}  admin
   ${GET_RESPONSE_ACTIVE}  Переглядати критерію  ${get_criteria.id}  ${user_name}
@@ -137,16 +138,16 @@ Resource  data/keywords_data.robot
 
 Перевірити цілісність критерій
   [Arguments]  ${first}  ${second}
-  should not be equal  ${first.dateModified}  ${second.dateModified}  msg=dateModified are not equal
-  should be equal  ${first.status}  retired
-  should be equal  ${second.status}  active
+  should not be equal  ${first.dateModified}  ${second.dateModified}  msg=dateModified are equal
+  should be equal  ${first.status}  retired  msg=status are not retited
+  should be equal  ${second.status}  active  msg=status are not active
   remove from dictionary  ${first}  status
   remove from dictionary  ${first}  dateModified
   remove from dictionary  ${second}  status
   remove from dictionary  ${second}  dateModified
   log  ${first}
   log  ${second}
-  should be equal  ${first}  ${second}  msg=DATA without status and  dateModified are not equal
+  should be equal  ${first}  ${second}  msg=DATA without status and dateModified are not equal
 
 Перевірити статус критерії
   [Arguments]  ${actual_result}

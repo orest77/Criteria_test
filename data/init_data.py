@@ -51,8 +51,10 @@ def create_fake_amount(award_amount):
 def create_fake_number(min_number, max_number):
     return random.randint(int(min_number), int(max_number))
 
+
 def create_fake_float(min_number, max_number):
     return random.uniform(float(min_number), float(max_number))
+
 
 def create_fake_title():
     return u"[ТЕСТУВАННЯ] {}".format(fake.title())
@@ -80,23 +82,19 @@ def subtraction(value1, value2):
 def create_fake_value_amount():
     return fake.random_int(min=1)
 
+
 def get_number_of_minutes(days, accelerator):
     return 1440 * int(days) / accelerator
+
 
 def field_with_id(prefix, sentence):
     return u"{}-{}: {}".format(prefix, fake.uuid4()[:8], sentence)
 
 
-
-
-
-
-
-
 """Method for data criteria"""
 
-def data_for_criteria(min_min, min_max, max_min, max_max):
-    return munchify(
+def data_for_criteria():
+    data = munchify(
         {
             "name": fake_uk.name(),
             "nameEng": fake_en.name(),
@@ -110,8 +108,8 @@ def data_for_criteria(min_min, min_max, max_min, max_max):
                 "scheme": "ДК021",
                 "description": "Солома"
             },
-            "minValue": str(create_fake_float(min_min, min_max)),
-            "maxValue": str(create_fake_float(max_min, max_max)),
+            "minValue": str(create_fake_float(0, 10)),
+            "maxValue": str(create_fake_float(21, 42)),
             "dataType": random.choice(['number', 'integer', 'boolean', 'string']),
             "unit": {
                 "name": "millilitre of water",
@@ -119,15 +117,17 @@ def data_for_criteria(min_min, min_max, max_min, max_max):
             }
         }
     )
+    return data
 
 
-def data_for_edit(min_min, min_max, max_min, max_max):
-    return munchify(
+def data_for_edit():
+    data = munchify(
         {
             "name": fake_uk.name(),
             "nameEng": fake_en.name(),
-            "minValue": str(create_fake_float(min_min, min_max)),
-            "maxValue": str(create_fake_float(max_min, max_max)),
+            "minValue": str(create_fake_float(0, 22)),
+            "maxValue": str(create_fake_float(43, 54)),
             "status": "active"
         }
     )
+    return data
