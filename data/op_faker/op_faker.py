@@ -3,6 +3,7 @@ from faker.generator import random
 from faker.providers import BaseProvider
 from copy import deepcopy
 from munch import Munch
+import random
 from json import load
 import os
 
@@ -29,6 +30,7 @@ class OP_Provider(BaseProvider):
     moz_cpvs = _fake_data.moz_cpvs
     items_base_data = _fake_data.items_base_data
     rationale_types = _fake_data.rationale_types
+    units = _fake_data.units
 
     @classmethod
     def randomize_nb_elements(self, number=10, le=60, ge=140):
@@ -112,73 +114,26 @@ class OP_Provider(BaseProvider):
         else:
             return self.random_element(self.cpvs)
 
-    @classmethod
-    def fake_item(self, cpv_group=None):
-        """
-        Generate a random item for openprocurement tenders
-
-        :param cpv_group: gives possibility to generate items
-            from a specific cpv group. Cpv group is three digits
-            in the beginning of each cpv id.
-        """
-        item_base_data = None
-        cpv = None
-        if cpv_group is None:
-            cpv = self.random_element(self.cpvs)
-        elif cpv_group == 336:
-            cpv = self.random_element(self.moz_cpvs)
-        else:
-            cpv_group = str(cpv_group)
-            similar_cpvs = []
-            for cpv_element in self.cpvs:
-                if cpv_element.startswith(cpv_group):
-                    similar_cpvs.append(cpv_element)
-            cpv = self.random_element(similar_cpvs)
-        for entity in self.items_base_data:
-            if entity["cpv_id"] == cpv:
-                item_base_data = entity
-                break
-        if not item_base_data:
-            raise ValueError('unable to find an item with CPV ' + cpv)
-
-        # choose appropriate additional classification for item_base_data's cpv
-        additional_class = []
-        for entity in self.classifications:
-            if entity["classification"]["id"] == item_base_data["cpv_id"]:
-                additional_class.append(entity)
-        if not additional_class:
-            raise ValueError('unable to find a matching additional classification for CPV ' + cpv)
-        classification = self.random_element(additional_class)
-
-        dk_descriptions = {
-            u'ДК003': (u'Послуги фахівців', u'Услуги специалистов', u'Specialists services'),
-            u'ДК015': (u'Дослідження та розробки', u'Исследования и разработки', u'Research and development'),
-            u'ДК018': (u'Будівлі та споруди', u'Здания и сооружения', u'Buildings and structures')
-        }
-        address = self.random_element(self.addresses)
-        item = {
-            "classification": classification["classification"],
-            "deliveryAddress": address["deliveryAddress"],
-            "deliveryLocation": address["deliveryLocation"],
-            "unit": item_base_data["unit"],
-            "quantity": self.randomize_nb_elements(number=item_base_data["quantity"], le=80, ge=120)
-        }
-        if item_base_data["cpv_id"] == "99999999-9":
-            scheme = classification["additionalClassifications"][0]["scheme"]
-            item.update({
-                "description": dk_descriptions[scheme][0],
-                "description_ru": dk_descriptions[scheme][1],
-                "description_en": dk_descriptions[scheme][2]
-            })
-        else:
-            item.update({
-                "additionalClassifications": classification["additionalClassifications"],
-                "description": item_base_data["description"],
-                "description_ru": item_base_data["description_ru"],
-                "description_en": item_base_data["description_en"]
-            })
-        return deepcopy(item)
 
     @classmethod
-    def rationaleTypes(self, amount=3):
-        return random.sample(self.rationale_types, amount)
+    def fake_item(self, scheme_group):
+        # """
+        # Generate a random item for criteria
+        scheme_group = str(scheme_group)
+        similar_scheme = []
+        actual_schema = ['ДК021', 'CPV_EN', 'CPV_RU', 'ДК003',' ДК015', 'ДК018', 'КЕКВ', 'NONE', 'specialNorms', 'UA-ROAD', 'GMDN']
+
+        for scheme_element in self.classifications:
+            if scheme_element["classification"]["scheme"].startswith(scheme_group) and scheme_element["additionalClassifications"][0]["scheme"] in actual_schema:
+                similar_scheme.append(scheme_element)
+        scheme = random.choice(similar_scheme)
+
+        similar_units = []
+        for unit_element in self.units:
+            similar_units.append(unit_element)
+        unit = random.choice(similar_units)
+
+        data = dict(scheme)
+        data['unit'] = unit
+
+        return data

@@ -93,27 +93,30 @@ def field_with_id(prefix, sentence):
 
 """Method for data criteria"""
 
-def data_for_criteria():
+
+
+def data_for_criteria(scheme):
+    data = fake_item(scheme)
     data = munchify(
         {
             "name": fake_uk.name(),
             "nameEng": fake_en.name(),
             "classification": {
-                "id": "92350000-9",
+                "id": data["classification"]["id"],
                 "scheme": "ДК021",
-                "description": "Послуги гральних закладів і тоталізаторів"
+                "description": data["classification"]["description"]
             },
             "additionalClassification": {
-                "id": "03114100-4",
-                "scheme": "ДК021",
-                "description": "Солома"
+                "id": data["additionalClassification"][0]["id"],
+                "scheme": data["additionalClassification"][0]["scheme"],
+                "description": data["additionalClassification"][0]["description"],
             },
             "minValue": str(create_fake_float(0, 10)),
             "maxValue": str(create_fake_float(21, 42)),
             "dataType": random.choice(['number', 'integer', 'boolean', 'string']),
             "unit": {
-                "name": "millilitre of water",
-                "code": "WW"
+                "name": data['unit']['name'],
+                "code": data['unit']['code']
             }
         }
     )
