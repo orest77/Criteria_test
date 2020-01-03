@@ -121,10 +121,12 @@ class OP_Provider(BaseProvider):
         # Generate a random item for criteria
         scheme_group = str(scheme_group)
         similar_scheme = []
-        actual_schema = ['ДК021', 'CPV_EN', 'CPV_RU', 'ДК003',' ДК015', 'ДК018', 'КЕКВ', 'NONE', 'specialNorms', 'UA-ROAD', 'GMDN']
+        actual_schema = ['ДК021', 'CPV_EN', 'CPV_RU', 'ДК003', ' ДК015', 'ДК018', 'КЕКВ', 'NONE', 'specialNorms', 'UA-ROAD', 'GMDN']
 
         for scheme_element in self.classifications:
-            if scheme_element["classification"]["scheme"].startswith(scheme_group) and scheme_element["additionalClassifications"][0]["scheme"] in actual_schema:
+            if scheme_element["classification"]["scheme"].startswith(scheme_group) \
+                    and scheme_element["additionalClassifications"][0]["scheme"] in actual_schema \
+                    and len(scheme_element["additionalClassifications"][0]["id"]) <= 10:
                 similar_scheme.append(scheme_element)
         scheme = random.choice(similar_scheme)
 
@@ -136,4 +138,4 @@ class OP_Provider(BaseProvider):
         data = dict(scheme)
         data['unit'] = unit
 
-        return data
+        return deepcopy(data)

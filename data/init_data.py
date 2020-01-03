@@ -95,9 +95,9 @@ def field_with_id(prefix, sentence):
 
 
 
-def data_for_criteria(scheme):
-    data = fake_item(scheme)
-    data = munchify(
+def data_for_criteria(scheme='ДК021'):
+    data = fake.fake_item(scheme)
+    data_json = munchify(
         {
             "name": fake_uk.name(),
             "nameEng": fake_en.name(),
@@ -107,12 +107,12 @@ def data_for_criteria(scheme):
                 "description": data["classification"]["description"]
             },
             "additionalClassification": {
-                "id": data["additionalClassification"][0]["id"],
-                "scheme": data["additionalClassification"][0]["scheme"],
-                "description": data["additionalClassification"][0]["description"],
+                "id": data["additionalClassifications"][0]["id"],
+                "scheme": data["additionalClassifications"][0]["scheme"],
+                "description": data["additionalClassifications"][0]["description"],
             },
             "minValue": str(create_fake_float(0, 10)),
-            "maxValue": str(create_fake_float(21, 42)),
+            "maxValue": str(create_fake_float(11, 42)),
             "dataType": random.choice(['number', 'integer', 'boolean', 'string']),
             "unit": {
                 "name": data['unit']['name'],
@@ -120,7 +120,7 @@ def data_for_criteria(scheme):
             }
         }
     )
-    return data
+    return data_json
 
 
 def data_for_edit():

@@ -20,7 +20,7 @@ Resource  data/keywords_data.robot
   Log Variables
   [Return]  ${GET_RESPONSE}
 
-Можливість переглядати критерію
+Можливість переглядати критерію по ідентифікатору
   [Arguments]  ${user_name}
   ${GET_RESPONSE_BY_ID}  Переглядати критерію  ${ID_CRITERIA}  ${user_name}
   log  ${GET_RESPONSE_BY_ID}
@@ -79,7 +79,7 @@ Resource  data/keywords_data.robot
 #########
 Перевірка цілісності даних критерії при змінювані статусу
   [Arguments]  ${user_name}
-  ${get_criteria}  Можливість переглядати критерію  ${user_name}
+  ${get_criteria}  Можливість переглядати критерію по ідентифікатору  ${user_name}
   ${responses}  create dictionary
   ${STATUS_DATA_RETIRED}  Підготувати дані для редагування
   set to dictionary  ${STATUS_DATA_RETIRED}  status=retired
@@ -93,14 +93,14 @@ Resource  data/keywords_data.robot
   Перевірити цілісність критерій  ${responses.first}  ${responses.second}
 #########
 
-Перевірити створену критерію
+Перевірити створену критерію по ідентифікатору
   [Arguments]  ${user_name}
-  ${get_criteria}  Можливість переглядати критерію  ${user_name}
+  ${get_criteria}  Можливість переглядати критерію по ідентифікатору  ${user_name}
   Порівняти дані критерії  ${get_criteria}  ${CRITERIA_DATA}
 
 Перевірити редагування критерії
   [Arguments]  ${user_name}
-  ${get_criteria}  Можливість переглядати критерію  ${user_name}
+  ${get_criteria}  Можливість переглядати критерію по ідентифікатору  ${user_name}
   Порівнняти відредаговані дані  ${get_criteria}  ${EDIT_DATA}
 
 Перевірити список критерій
@@ -114,7 +114,7 @@ Resource  data/keywords_data.robot
   ${expected_result}  convert to string  You do not have permission to perform this action.
   Звірити повідомення про помилку  ${create_criteria}  ${expected_result}
 
-Перевірити відсутність доступу користувача до зміни критерії
+Перевірити відсутність доступу користувача до можливості змінити критерію
   [Arguments]  ${user_name}
   ${create_criteria}  Run Keyword And Expect Error  *  Можливість змінити критерію  ${user_name}
   ${expected_result}  convert to string  You do not have permission to perform this action.
@@ -128,9 +128,54 @@ Resource  data/keywords_data.robot
 
 Перевірити чи критерія видалена
   [Arguments]  ${user_name}
-  ${get_criteria}  Можливість переглядати критерію  ${user_name}
+  ${get_criteria}  Можливість переглядати критерію по ідентифікатору  ${user_name}
   log  ${get_criteria.status}
   Перевірити статус критерії  ${get_criteria}
+
+Перевірити відсутність можливості створити критерію з некоректним ід-кодом в класифікації
+  [Arguments]  ${user_name}  ${invalid_id}
+  ${ARRANGE_DATA}  Піготувати дані для критерії
+  set to dictionary  ${ARRANGE_DATA.classification}  id=${invalid_id}
+  ${create_criteria}  Run Keyword And Expect Error  *  Створити критерію  ${ARRANGE_DATA}  ${user_name}
+  log  ${create_criteria}
+  ${lenght_id}   get length  ${invalid_id}
+  Run Keyword If    ${lenght_id} == 10    Звірити повідомення про помилку  ${create_criteria}  Wrong id
+  ...  ELSE IF  ${lenght_id} < 10  Звірити повідомення про помилку  ${create_criteria}  Enter a valid value.
+  ...  ELSE IF  ${lenght_id} > 10    Звірити повідомення про помилку  ${create_criteria}  Ensure this field has no more than 10 characters.
+
+Перевірити відсутність можливості створити критерію з некоректним даними в допоміжній класифікації
+  [Arguments]  ${user_name}  ${string_name}  ${invalid_data}
+  ${ARRANGE_DATA}  Піготувати дані для критерії
+  set to dictionary  ${ARRANGE_DATA.additionalClassification}  ${string_name}=${invalid_data}
+  ${lenght_id}  get length  ${invalid_data}
+  ${create_criteria}  Run Keyword And Expect Error  *   Створити критерію  ${ARRANGE_DATA}  ${user_name}
+  run keyword if  '${string_name}' == 'id' and ${lenght_id} > 10   Звірити повідомення про помилку  ${create_criteria}  Ensure this field has no more than 10 characters.
+  ...  ELSE IF  '${string_name}' == 'id' and ${lenght_id} < 10    Звірити повідомення про помилку  ${create_criteria}  Wrong id
+  ...  ELSE IF  '${string_name}' == 'scheme'  Звірити повідомення про помилку  ${create_criteria}  Unknown scheme
+
+Перевірити відсутність можливості змінити масимальне значення менше від мінімального
+  [Arguments]  ${user_name}  ${min}  ${max}
+  ${ARRANGE_DATA}  Піготувати дані для критерії
+  set to dictionary  ${ARRANGE_DATA}  minValue=${min}
+  set to dictionary  ${ARRANGE_DATA}  maxValue=${max}
+  ${create_criteria}  Run Keyword And Expect Error  *   Створити критерію  ${ARRANGE_DATA}  ${user_name}
+  Звірити повідомення про помилку  ${create_criteria}  minValue can`t be greater than maxValue
+
+Перевірити відсутність можливості змінити на некоректну одиницю виміру
+  [Arguments]  ${user_name}  ${invalid_unit}
+  ${ARRANGE_DATA}  Піготувати дані для критерії
+  set to dictionary  ${ARRANGE_DATA.unit}  code=${invalid_unit}
+  ${create_criteria}  Run Keyword And Expect Error  *   Створити критерію  ${ARRANGE_DATA}  ${user_name}
+  Звірити повідомення про помилку  ${create_criteria}  Wrong code
+
+Перевірити авто допис при некоректному вводі данних
+  [Arguments]  ${user_name}  ${classification}  ${invalid_data}
+  ${ARRANGE_DATA}  Піготувати дані для критерії
+  ${actual_data}  Get From Dictionary  ${ARRANGE_DATA.${classification}}  description
+  set to dictionary  ${ARRANGE_DATA.${classification}}  description=${invalid_data}
+  ${create_criteria}  Створити критерію для перевірки  ${ARRANGE_DATA}  ${user_name}
+  should be equal  ${create_criteria.${classification}.description}  ${actual_data}
+  should not be equal  ${create_criteria.${classification}.description}  ${ARRANGE_DATA.${classification}.description}
 
 ##################
 #####ASSERT######
@@ -166,7 +211,7 @@ Resource  data/keywords_data.robot
 
 Звірити повідомення про помилку
   [Arguments]  ${actual_result}  ${expeted_result}
-  should contain  ${actual_result}  ${expeted_result}
+  should contain  ${actual_result}  ${expeted_result}  msg=Objects are not contain
 
 
 Звірити всі критерії з підрахунком

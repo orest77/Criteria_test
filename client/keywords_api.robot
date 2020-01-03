@@ -16,7 +16,6 @@ Resource  resource.robot
   \  set to dictionary  ${USERS.users.${username}}  client=${api_wraper}
   set suite variable  ${USERS}
 
-
 Створити критерію
   [Arguments]  ${DATA}  ${username}
   ${RESPONSE}  call method  ${USERS.users.${username}.client}  create_criteria  ${RESOURCE}  ${DATA}
@@ -60,3 +59,9 @@ Resource  resource.robot
   Log Variables
   [Return]  ${RESPONSE}
 
+Створити критерію для перевірки
+  [Arguments]  ${DATA}  ${username}
+  ${RESPONSE}  call method  ${USERS.users.${username}.client}  create_criteria  ${RESOURCE}  ${DATA}
+  log  ${RESPONSE}
+  Log Variables
+  [Return]  ${RESPONSE}
